@@ -1,3 +1,7 @@
+# v0.0.0.9003
+
+* `currencyr::convert` now rounds the result value to two decimal places.
+
 # v0.0.0.9002
 
 * Memoise the API calls since they only change daily.

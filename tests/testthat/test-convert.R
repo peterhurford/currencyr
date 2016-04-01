@@ -60,6 +60,11 @@ test_that("it quickchecks USD to EUR", {
   })
 })
 
+test_that("it rounds", {
+  expect_equal(68.12, convert(68.123456)$value)
+  expect_equal(68.99, convert(68.987654)$value)
+})
+
 test_that("it prints", {
   expect_output(print(convert(68)), "68 American Dollar")
   expect_output(print(convert(68, from = "EUR", to = "EUR")), "68 Euro")

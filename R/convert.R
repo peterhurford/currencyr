@@ -17,7 +17,7 @@ convert <- checkr::ensure(
   function(amount, from = "USD", to = "USD") {
     exchange_rate <- if (identical(from, to)) { 1 } else { currencyr:::fixer(from, to) }
     result <- list(
-      value = amount * exchange_rate,
+      value = round(amount * exchange_rate, 2),
       unit = currencyr:::get_unit_from_code(to),
       code = to)
     class(result) <- "currency"
