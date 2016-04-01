@@ -29,6 +29,7 @@ currency_map <- memoise::memoise(function() {
 
 #' Get the currency codes from the currency map.
 #' @import checkr
+#' @export
 currency_codes <- memoise::memoise(checkr::ensure(
   post = list(result %is% vector, result %contains_only% simple_string),
   function() {

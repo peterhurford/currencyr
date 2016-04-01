@@ -6,7 +6,7 @@
 #' @return the amount in the converted currency.
 #' @import checkr
 #' @export
-currency <- checkr::ensure(
+convert <- checkr::ensure(
   pre = list(
     amount %is% numeric, length(amount) == 1,
     from %in% currencyr:::currency_codes(),
@@ -31,3 +31,6 @@ currency <- checkr::ensure(
 print.currency <- function(x, ...) {
    print(paste(round(x$value, 2), x$unit), ...)
 }
+
+#' @aliases convert
+currency <- convert
