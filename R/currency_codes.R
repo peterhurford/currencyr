@@ -32,7 +32,7 @@ currency_map <- memoise::memoise(function() {
 currency_codes <- memoise::memoise(
   checkr::ensure(post = list(result %is% vector, result %contains_only% simple_string),
   function() {
-    unlist(names(currency_map()))
+    unlist(names(checkr:::currency_map()))
   }))
 
 #' Get a unit from a currency code.
@@ -43,7 +43,7 @@ get_unit_from_code <- checkr::ensure(
   pre = code %in% currency_codes(),
   post = result %is% simple_string,
   function(code) {
-    currency_map()[[code]]
+    checkr:::currency_map()[[code]]
   })
 
 #' Get the currency code from a unit, using fuzzy matching.
@@ -54,5 +54,6 @@ get_code_from_unit <- checkr::ensure(
   pre = unit %is% simple_string,
   post = result %in% currency_codes(),
   function(unit) {
-    names(currency_map())[grep(tolower(unit), lapply(currency_map(), tolower))]
+    names(checkr:::currency_map())[grep(tolower(unit),
+      lapply(checkr:::currency_map(), tolower))]
   })

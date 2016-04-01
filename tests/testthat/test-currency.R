@@ -2,7 +2,7 @@ context("currency")
 
 test_that("it quickchecks USD to USD", {
   with_mock(`fixer` = function(from, to) {
-      stop("Fixer should not be called in this simple example!") 
+      stop("Fixer should not be called in this simple example!")
     }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
@@ -17,7 +17,7 @@ test_that("it quickchecks USD to USD", {
 
 test_that("it quickchecks CAD to CAD", {
   with_mock(`fixer` = function(from, to) {
-      stop("Fixer should not be called in this simple example!") 
+      stop("Fixer should not be called in this simple example!")
     }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),

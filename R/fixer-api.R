@@ -1,5 +1,5 @@
 fixer <- function(from, to) {
-  output <- httr::GET(get_fixer_url(from, to))
+  output <- httr::GET(checkr:::get_fixer_url(from, to))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
     stop("Error in fixer API - status code was ", status_code, "!")
