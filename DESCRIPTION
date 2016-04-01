@@ -1,8 +1,19 @@
 Package: currencyr
 Title: Convert various currencies
 Version: 0.0.0.9000
+Author: Peter Hurford <peter@peterhurford.com>
+Maintainer: Peter Hurford <peter@peterhurford.com>
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
-Description: Convert various currencies into other currencies using the Fixer.io API.
-Depends: R (>= 3.1.0)
+Description: Convert various currencies into other currencies using the Fixer.io
+    API.
+Depends:
+    R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: true
+Imports:
+    checkr,
+    httr
+Suggests:
+    testthat
+Remotes: peterhurford/checkr
+RoxygenNote: 5.0.1.9000
