@@ -1,3 +1,4 @@
+#' A map of currency codes to their units.
 currency_map <- memoise::memoise(function() {
   list(
     "AUD" = "Australian Dollar",
@@ -26,16 +27,32 @@ currency_map <- memoise::memoise(function() {
     "ZAR" = "South African Rands"
   )})
 
+#' Get the currency codes from the currency map.
+#' @import checkr
 currency_codes <- memoise::memoise(
   checkr::ensure(post = list(result %is% vector, result %contains_only% simple_string),
   function() {
     unlist(names(currency_map()))
   }))
 
-get_unit_from_code <- function(code) {
-  currency_map()[[code]]
-}
+#' Get a unit from a currency code.
+#' @param code character. The currency code to use.
+#' @import checkr
+#' @export
+get_unit_from_code <- checkr::ensure(
+  pre = code %in% currency_codes(),
+  post = result %is% simple_string,
+  function(code) {
+    currency_map()[[code]]
+  })
 
-get_code_from_unit <- function(unit) {
-  names(currency_map())[grep(tolower(unit), lapply(currency_map(), tolower))]
-}
+#' Get the currency code from a unit, using fuzzy matching.
+#' @param unit character. The currency unit to try.
+#' @import checkr
+#' @export
+get_code_from_unit <- checkr::ensure(
+  pre = unit %is% simple_string,
+  post = result %in% currency_codes(),
+  function(unit) {
+    names(currency_map())[grep(tolower(unit), lapply(currency_map(), tolower))]
+  })
