@@ -9,16 +9,16 @@
 currency <- checkr::ensure(
   pre = list(
     amount %is% numeric, length(amount) == 1,
-    from %in% currency_codes(),
-    to %in% currency_codes()),
+    from %in% currencyr:::currency_codes(),
+    to %in% currencyr:::currency_codes()),
   post = list(
     result %is% currency
   ),
   function(amount, from = "USD", to = "USD") {
-    exchange_rate <- if (identical(from, to)) { 1 } else { fixer(from, to) }
+    exchange_rate <- if (identical(from, to)) { 1 } else { currencyr:::fixer(from, to) }
     result <- list(
       value = amount * exchange_rate,
-      unit = get_unit_from_code(to),
+      unit = currencyr:::get_unit_from_code(to),
       code = to)
     class(result) <- "currency"
     result

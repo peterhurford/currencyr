@@ -1,7 +1,7 @@
 context("currency")
 
 test_that("it quickchecks USD to USD", {
-  with_mock(`fixer` = function(from, to) {
+  with_mock(`currencyr:::fixer` = function(from, to) {
       stop("Fixer should not be called in this simple example!")
     }, {
     checkr::quickcheck(checkr::ensure(
@@ -16,7 +16,7 @@ test_that("it quickchecks USD to USD", {
 })
 
 test_that("it quickchecks CAD to CAD", {
-  with_mock(`fixer` = function(from, to) {
+  with_mock(`currencyr:::fixer` = function(from, to) {
       stop("Fixer should not be called in this simple example!")
     }, {
     checkr::quickcheck(checkr::ensure(
@@ -31,7 +31,7 @@ test_that("it quickchecks CAD to CAD", {
 })
 
 test_that("it quickchecks USD to CAD", {
-  with_mock(`fixer` = function(from, to) {
+  with_mock(`currencyr:::fixer` = function(from, to) {
       if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
     }, {
     checkr::quickcheck(checkr::ensure(
@@ -46,7 +46,7 @@ test_that("it quickchecks USD to CAD", {
 })
 
 test_that("it quickchecks USD to EUR", {
-  with_mock(`fixer` = function(from, to) {
+  with_mock(`currencyr:::fixer` = function(from, to) {
       if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
     }, {
     checkr::quickcheck(checkr::ensure(
