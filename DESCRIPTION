@@ -6,4 +6,6 @@ Description: Convert various currencies into other currencies using the Fixer.io
 Depends: R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: true
+Imports: checkr
 Suggests: testthat
+Remotes: peterhurford/checkr
