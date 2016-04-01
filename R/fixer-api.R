@@ -1,4 +1,4 @@
-fixer <- function(from, to) {
+fixer <- memoise::memoise(function(from, to) {
   output <- httr::GET(currencyr:::get_fixer_url(from, to))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
@@ -6,7 +6,7 @@ fixer <- function(from, to) {
   } else {
     httr::content(output)$rates[[from]]
   }
-}
+})
 
 get_fixer_url <- function(from, to) {
   from <- toupper(from)
