@@ -1,10 +1,12 @@
 currency_map <- memoise::memoise(function() {
   list(
-    list("USD", "American Dollar")
+    list("USD", "American Dollar"),
+    list("CAD", "Candian Dollar"),
+    list("EUR", "Euro")
   )})
 
-currency_code <- memoise::memoise(
-  ensure(post = list(result %is% vector, result %contains_only% simple_string),
+currency_codes <- memoise::memoise(
+  checkr::ensure(post = list(result %is% vector, result %contains_only% simple_string),
   function() {
     unlist(lapply(currency_map(), `[[`, 1))
   }))

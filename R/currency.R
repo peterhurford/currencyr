@@ -1,4 +1,4 @@
-currency <- ensure(
+currency <- checkr::ensure(
   pre = list(
     amount %is% numeric, length(amount) == 1,
     from %in% currency_codes(),
