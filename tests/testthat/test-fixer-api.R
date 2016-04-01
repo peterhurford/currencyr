@@ -16,3 +16,13 @@ test_that("it returns content", {
     expect_equal(200, fixer("USD", "EUR"))
   )
 })
+
+test_that("get_fixer_url", {
+  expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
+    get_fixer_url("USD", "EUR"))
+})
+
+test_that("get_fixer_url upcases", {
+  expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
+    get_fixer_url("usd", "eur"))
+})

@@ -9,6 +9,8 @@ fixer <- function(from, to) {
 }
 
 get_fixer_url <- function(from, to) {
+  from <- toupper(from)
+  to <- toupper(to)
   # if we're converting from USD to EUR, the symbol should be USD and the base should be EUR
   paste0("http://api.fixer.io/latest?symbols=", from, "&base=", to)
 }
