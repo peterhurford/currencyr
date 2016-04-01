@@ -1,3 +1,7 @@
+# v0.0.0.9002
+
+* Memoise the API calls since they only change daily.
+
 # v0.0.0.9001
 
 * Change from `currencyr::currency` to `currencyr::convert`.
