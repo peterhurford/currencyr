@@ -5,7 +5,7 @@ test_that("it error handles", {
     `httr::GET` = function(...) { NULL },
     `httr::content` = function(...) { NULL },
     `httr::status_code` = function(...) 500L,
-    expect_error(fixer("USD", "EUR"), "Error in fixer API - status code was 500!"))
+    expect_error(exchange_rate("USD", "EUR"), "Error in fixer API - status code was 500!"))
 })
 
 test_that("it returns content", {
@@ -13,7 +13,7 @@ test_that("it returns content", {
     `httr::GET` = function(...) { NULL },
     `httr::content` = function(...) { list(rates = list(USD = 200)) },
     `httr::status_code` = function(...) 200L,
-    expect_equal(200, fixer("USD", "EUR"))
+    expect_equal(200, exchange_rate("USD", "EUR"))
   )
 })
 
