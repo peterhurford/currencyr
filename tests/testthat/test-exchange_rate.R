@@ -19,10 +19,10 @@ test_that("it returns content", {
 
 test_that("get_fixer_url", {
   expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
-    get_fixer_url("USD", "EUR"))
+    get_fixer_url("EUR", "USD"))
 })
 
 test_that("get_fixer_url upcases", {
   expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
-    get_fixer_url("usd", "eur"))
+    get_fixer_url("eur", "usd"))
 })

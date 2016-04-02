@@ -1,4 +1,4 @@
-exchange_value <- memoise::memoise(function(from, to) {
+exchange_rate <- memoise::memoise(function(from, to) {
   output <- httr::GET(currencyr:::get_fixer_url(from, to))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
