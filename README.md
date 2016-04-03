@@ -5,9 +5,11 @@
 ```R
 currency <- currencyr::convert(1000, from = "USD", to = "CAD")
 currency
-# 772.49 Canadian Dollar
+# 1302.8 Canadian Dollar
 currency$value
-# 772.49
+# 1302.8
+currency$exchange_rate
+# 1.3028
 currency$unit
 # "Canadian Dollar"
 currency$code
