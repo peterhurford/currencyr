@@ -1,3 +1,8 @@
+# v0.0.0.9004
+
+* Correct a terrible bug that made the exchange rate go in the wrong direction!
+* Change `fixer` function to be called the (more clear) `exchange_rate` function.
+
 # v0.0.0.9003
 
 * `currencyr::convert` now rounds the result value to two decimal places.

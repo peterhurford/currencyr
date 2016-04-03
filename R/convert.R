@@ -23,6 +23,7 @@ convert <- checkr::ensure(
     result <- list(
       value = round(amount * exchange_rate, 2),
       unit = currencyr:::get_unit_from_code(to),
+      exchange_rate = exchange_rate,
       code = to)
     class(result) <- "currency"
     result

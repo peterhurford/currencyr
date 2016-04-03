@@ -1,4 +1,4 @@
-context("fixer-api")
+context("exchange_rate")
 
 test_that("it error handles", {
   with_mock(
@@ -11,7 +11,7 @@ test_that("it error handles", {
 test_that("it returns content", {
   with_mock(
     `httr::GET` = function(...) { NULL },
-    `httr::content` = function(...) { list(rates = list(USD = 200)) },
+    `httr::content` = function(...) { list(rates = list(EUR = 200)) },
     `httr::status_code` = function(...) 200L,
     expect_equal(200, exchange_rate("USD", "EUR"))
   )

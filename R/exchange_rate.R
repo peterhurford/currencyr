@@ -1,12 +1,14 @@
-exchange_rate <- memoise::memoise(function(from, to) {
-  output <- httr::GET(currencyr:::get_fixer_url(from, to))
-  status_code <- httr::status_code(output)
-  if (!is.successful(status_code)) {
-    stop("Error in fixer API - status code was ", status_code, "!")
-  } else {
-    httr::content(output)$rates[[from]]
-  }
-})
+exchange_rate <- memoise::memoise(ensure(
+  post = list(result %is% numeric, length(result) == 1),
+  function(from, to) {
+    output <- httr::GET(currencyr:::get_fixer_url(from, to))
+    status_code <- httr::status_code(output)
+    if (!is.successful(status_code)) {
+      stop("Error in fixer API - status code was ", status_code, "!")
+    } else {
+      httr::content(output)$rates[[to]]
+    }
+  }))
 
 get_fixer_url <- function(from, to) {
   from <- toupper(from)
