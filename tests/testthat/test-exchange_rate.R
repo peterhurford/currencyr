@@ -26,3 +26,8 @@ test_that("get_fixer_url upcases", {
   expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
     get_fixer_url("eur", "usd"))
 })
+
+test_that("get_fixer_url handles as_of", {
+  expect_equal("http://api.fixer.io/2017-12-11?symbols=USD&base=EUR",
+    get_fixer_url("eur", "usd", as_of = lubridate::ymd("2017-12-11")))
+})
