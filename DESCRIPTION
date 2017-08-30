@@ -12,9 +12,9 @@ License: MIT + file LICENSE
 LazyData: true
 Imports:
     checkr,
-    httr
+    httr,
+    lubridate
 Suggests:
-    lubridate,
     testthat
 Remotes: peterhurford/checkr
 RoxygenNote: 5.0.1.9000

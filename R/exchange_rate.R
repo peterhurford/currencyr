@@ -1,5 +1,9 @@
 exchange_rates <- memoise::memoise(function(as_of) {
-  message("Downloading fresh exchange rates... May take a minute...")
+  if (length(as_of) == 1 && lubridate::ymd(Sys.Date()) != lubridate::ymd(as_of)) {
+    message("Downloading historical exchange rates as of ", as_of, "... May take a minute...")
+  } else {
+    message("Downloading fresh exchange rates... May take a minute...")
+  }
   output <- httr::GET(currencyr:::get_fixer_url(base = "USD", as_of))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
