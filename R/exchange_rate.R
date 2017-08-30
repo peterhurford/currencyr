@@ -1,6 +1,6 @@
-exchange_rates <- memoise::memoise(function(base, as_of) {
+exchange_rates <- memoise::memoise(function(as_of) {
   message("Downloading fresh exchange rates... May take a minute...")
-  output <- httr::GET(currencyr:::get_fixer_url(base, as_of))
+  output <- httr::GET(currencyr:::get_fixer_url(base = "USD", as_of))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
     stop("Error in fixer API - status code was ", status_code, "!")
@@ -12,7 +12,17 @@ exchange_rates <- memoise::memoise(function(base, as_of) {
 exchange_rate <- memoise::memoise(ensure(
   post = list(result %is% numeric, length(result) == 1),
   function(from, to, as_of = NULL) {
-    exchange_rates(from, as_of)[[to]]
+    rates <- exchange_rates(as_of)
+    if (identical(from, "USD")) {
+      rates[[to]]
+    } else {
+      # Convert `from` to USD
+      from_rate <- 1 / rates[[from]]
+      # Convert `from_rate` (USD) to `to`.
+      to_rate <- rates[[to]]
+      # Create rate, converting to USD in between
+      from_rate * to_rate
+    }
   }))
 
 get_fixer_url <- function(base = "USD", as_of = NULL) {
