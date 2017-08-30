@@ -9,12 +9,14 @@ exchange_rates <- memoise::memoise(function(as_of) {
   }
 })
 
-exchange_rate <- memoise::memoise(ensure(
+exchange_rate <- ensure(
   post = list(result %is% numeric, length(result) == 1),
   function(from, to, as_of = NULL) {
     rates <- exchange_rates(as_of)
     if (identical(from, "USD")) {
       rates[[to]]
+    } else if (identical(to, "USD")) {
+      1 / rates[[from]]
     } else {
       # Convert `from` to USD
       from_rate <- 1 / rates[[from]]
@@ -23,7 +25,7 @@ exchange_rate <- memoise::memoise(ensure(
       # Create rate, converting to USD in between
       from_rate * to_rate
     }
-  }))
+  })
 
 get_fixer_url <- function(base = "USD", as_of = NULL) {
   if (length(as_of) == 0) { as_of <- "latest" }
