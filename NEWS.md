@@ -1,5 +1,6 @@
 #### v0.0.0.9005
 
+* Amends `exchange_rate` to get exchange rates up front.
 * Amends convert to take an `as_of` parameter specifying a date to peg the conversion to.
 
 #### v0.0.0.9004
