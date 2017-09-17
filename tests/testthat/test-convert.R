@@ -32,9 +32,10 @@ test_that("it quickchecks CAD to CAD", {
 })
 
 test_that("it quickchecks USD to CAD", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
-      if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
-    }, {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+              if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -47,9 +48,10 @@ test_that("it quickchecks USD to CAD", {
 })
 
 test_that("it quickchecks USD to EUR", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
-      if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
-    }, {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+              if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -70,3 +72,34 @@ test_that("it prints", {
   expect_output(print(convert(68)), "68 American Dollar")
   expect_output(print(convert(68, from = "EUR", to = "EUR")), "68 Euro")
 })
+
+test_that("as_of must be yyyy-mm-dd", {
+  expect_error(convert(68, from = "USD", to = "EUR", as_of = "pizza"), "yyyy-mm-dd format")
+})
+
+test_that("as_of older than 2000 is not supported", {
+  expect_error(convert(68, from = "USD", to = "EUR", as_of = "1991-12-11"), "not supported")
+})
+
+test_that("time travel not supported", {
+  expect_error(convert(68, from = "USD", to = "EUR", as_of = "4991-12-11"), "time travel")
+})
+
+test_that("it quickchecks USD to EUR with as_of", {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of) {
+              if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
+    checkr::quickcheck(checkr::ensure(
+      pre = list(amount %is% numeric, length(amount) == 1),
+      post = list(
+        identical(result$value, round(amount * 2, 2)),
+        identical(result$unit, "Euro"),
+        identical(result$exchange_rate, 2),
+        identical(result$code, "EUR")),
+      function(amount) { convert(amount, from = "USD", to = "EUR", as_of = "2017-01-12") }))
+  })
+})
+
+# TODO: quickcheck with date strings.
+# TODO: test as_of = "today" and as_of = "latest"

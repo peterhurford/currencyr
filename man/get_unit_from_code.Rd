@@ -12,4 +12,3 @@ get_unit_from_code(code)
 \description{
 Get a unit from a currency code.
 }
-

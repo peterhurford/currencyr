@@ -16,6 +16,18 @@ currency$code
 # "CAD"
 ```
 
+You can also use past conversion rates from 1 Jan 2000 onward.
+
+```R
+> currencyr::convert(1000, from = "USD", to = "CAD", as_of = "today")
+[1] "1255.5 Canadian Dollar"
+> currencyr::convert(1000, from = "USD", to = "CAD", as_of = "2012-01-01")
+[1] "1021.3 Canadian Dollar"
+> currencyr::convert(1000, from = "USD", to = "CAD", as_of = "2002-01-01")
+[1] "1597.3 Canadian Dollar"
+```
+
+
 ## Installation
 
 This package is not yet available from CRAN. To install the latest development builds directly from GitHub, run this instead:

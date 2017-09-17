@@ -17,12 +17,17 @@ test_that("it returns content", {
   )
 })
 
+# TODO: Test memoization
+
 test_that("get_fixer_url", {
-  expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
-    get_fixer_url("EUR", "USD"))
+  expect_equal("http://api.fixer.io/latest?base=USD", get_fixer_url("USD"))
 })
 
 test_that("get_fixer_url upcases", {
-  expect_equal("http://api.fixer.io/latest?symbols=USD&base=EUR",
-    get_fixer_url("eur", "usd"))
+  expect_equal("http://api.fixer.io/latest?base=EUR", get_fixer_url("eur"))
+})
+
+test_that("get_fixer_url handles as_of", {
+  expect_equal("http://api.fixer.io/2017-12-11?base=CAD",
+    get_fixer_url("cad", as_of = lubridate::ymd("2017-12-11")))
 })

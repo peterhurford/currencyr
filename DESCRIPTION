@@ -1,6 +1,6 @@
 Package: currencyr
 Title: Convert various currencies
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Author: Peter Hurford <peter@peterhurford.com>
 Maintainer: Peter Hurford <peter@peterhurford.com>
 Authors@R: person("Peter", "Hurford", email = "peter@peterhurford.com", role = c("aut", "cre"))
@@ -12,8 +12,9 @@ License: MIT + file LICENSE
 LazyData: true
 Imports:
     checkr,
-    httr
+    httr,
+    lubridate
 Suggests:
     testthat
 Remotes: peterhurford/checkr
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.0.1

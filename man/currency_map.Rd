@@ -9,4 +9,3 @@ currency_map()
 \description{
 A map of currency codes to their units.
 }
-
