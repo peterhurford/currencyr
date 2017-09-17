@@ -3,6 +3,10 @@
 #' @param amount numeric. The amount to convert.
 #' @param from character. The currency code to convert from. Defaults to \code{USD}.
 #' @param to character. The currency code to convert to. Defaults to \code{USD}.
+#' @param as_of character. The time of conversion to use for calculating the exchange rate.
+#'    \code{latest} or \code{today} or \code{NULL} uses the most recent rate (default). Otherwise,
+#'    one can enter in a string in "yyyy-mm-dd" format (e.g., "2004-01-30") to get the historical
+#'    exchange rate as of that time. Only dates on or after 2000-01-01 are supported.
 #' @return the amount in the converted currency.
 #' @import checkr
 #' @export

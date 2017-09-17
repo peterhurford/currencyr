@@ -12,4 +12,3 @@ get_code_from_unit(unit)
 \description{
 Get the currency code from a unit, using fuzzy matching.
 }
-
