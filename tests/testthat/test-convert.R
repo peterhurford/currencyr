@@ -32,9 +32,10 @@ test_that("it quickchecks CAD to CAD", {
 })
 
 test_that("it quickchecks USD to CAD", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
-      if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
-    }, {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+              if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -47,9 +48,10 @@ test_that("it quickchecks USD to CAD", {
 })
 
 test_that("it quickchecks USD to EUR", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
-      if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
-    }, {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+              if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -84,11 +86,10 @@ test_that("time travel not supported", {
 })
 
 test_that("it quickchecks USD to EUR with as_of", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
-      if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
-    }, {
-    # TODO: quickcheck with date strings.
-    # TODO: test as_of = "today" and as_of = "latest"
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of) {
+              if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
+            },
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -99,3 +100,6 @@ test_that("it quickchecks USD to EUR with as_of", {
       function(amount) { convert(amount, from = "USD", to = "EUR", as_of = "2017-01-12") }))
   })
 })
+
+# TODO: quickcheck with date strings.
+# TODO: test as_of = "today" and as_of = "latest"
