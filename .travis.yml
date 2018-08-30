@@ -10,7 +10,6 @@ repos:
 env:
   - global:
     - WARNINGS_ARE_ERRORS=1
-    - _R_CHECK_FORCE_SUGGESTS_=0
     - LINTR_COMMENT_BOT=false
 install:
   - Rscript -e 'if (!require("devtools")) install.packages("devtools")'
