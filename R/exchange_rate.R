@@ -37,7 +37,7 @@ exchange_rate <- ensure(
   })
 
 get_fixer_url <- function(as_of = NULL, api_key = "") {
-  if (!checkr::is.simple_string(as_of)) { as_of <- "latest" }
+  if (is.null(as_of) || length(as_of) != 1 || !nzchar(as_of)) { as_of <- "latest" }
   paste0("http://data.fixer.io/", as_of, "?access_key=", api_key)
 }
 

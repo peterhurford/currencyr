@@ -21,19 +21,23 @@ test_that("it error handles", {
 test_that("it returns content", {
   with_mock(
     `httr::GET` = function(...) { NULL },
-    `httr::content` = function(...) { list(rates = list(EUR = 200)) },
-    `httr::status_code` = function(...) 200L,
-    expect_equal(200, exchange_rate("USD", "EUR", api_key = "key"))
-  )
+    `httr::content` = function(...) { list(rates = list(USD = 200)) },
+    `httr::status_code` = function(...) 200L, {
+      expect_equal(1 / 200, exchange_rate("USD", "EUR", api_key = "key"))
+    })
 })
 
 # TODO: Test memoization
 
 test_that("get_fixer_url", {
-  expect_equal("http://api.fixer.io/latest?access_key=", get_fixer_url())
+  expect_equal("http://data.fixer.io/latest?access_key=", get_fixer_url())
 })
 
 test_that("get_fixer_url handles as_of", {
-  expect_equal("http://api.fixer.io/2017-12-11?access_key=",
+  expect_equal("http://data.fixer.io/2017-12-11?access_key=",
     get_fixer_url(lubridate::ymd("2017-12-11")))
+})
+
+test_that("get_fixer_url handles bogus input", {
+  expect_equal("http://data.fixer.io/latest?access_key=", get_fixer_url(""))
 })
