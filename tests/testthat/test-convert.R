@@ -1,9 +1,10 @@
 context("convert")
 
 test_that("it quickchecks USD to USD", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, api_key) {
       stop("Fixer should not be called in this simple example!")
-    }, {
+    },
+    `currencyr:::get_fixer_api_key` = function() { "key" }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -17,9 +18,10 @@ test_that("it quickchecks USD to USD", {
 })
 
 test_that("it quickchecks CAD to CAD", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to) {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, api_key) {
       stop("Fixer should not be called in this simple example!")
-    }, {
+    },
+    `currencyr:::get_fixer_api_key` = function() { "key" }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -32,10 +34,12 @@ test_that("it quickchecks CAD to CAD", {
 })
 
 test_that("it quickchecks USD to CAD", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL, api_key) {
               if (identical(to, "CAD")) { 0.5 } else { stop("Invalid code!") }
             },
-            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
+            `currencyr:::exchange_rates` = function(as_of, api_key) {
+              stop("Should not be called!") },
+            `currencyr:::get_fixer_api_key` = function() { "key" }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -48,10 +52,12 @@ test_that("it quickchecks USD to CAD", {
 })
 
 test_that("it quickchecks USD to EUR", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL) {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of = NULL, api_key) {
               if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
             },
-            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
+            `currencyr:::exchange_rates` = function(as_of, api_key) {
+              stop("Should not be called!") },
+            `currencyr:::get_fixer_api_key` = function() { "key" }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(
@@ -64,32 +70,43 @@ test_that("it quickchecks USD to EUR", {
 })
 
 test_that("it rounds", {
-  expect_equal(68.12, convert(68.123456)$value)
-  expect_equal(68.99, convert(68.987654)$value)
+  with_mock(`currencyr::get_fixer_api_key` = function() { "key" }, {
+    expect_equal(68.12, convert(68.123456)$value)
+    expect_equal(68.99, convert(68.987654)$value)
+  })
 })
 
 test_that("it prints", {
-  expect_output(print(convert(68)), "68 American Dollar")
-  expect_output(print(convert(68, from = "EUR", to = "EUR")), "68 Euro")
+  with_mock(`currencyr::get_fixer_api_key` = function() { "key" }, {
+    expect_output(print(convert(68)), "68 American Dollar")
+    expect_output(print(convert(68, from = "EUR", to = "EUR")), "68 Euro")
+  })
 })
 
 test_that("as_of must be yyyy-mm-dd", {
-  expect_error(convert(68, from = "USD", to = "EUR", as_of = "pizza"), "yyyy-mm-dd format")
+  with_mock(`currencyr::get_fixer_api_key` = function() { "key" }, {
+    expect_error(convert(68, from = "USD", to = "EUR", as_of = "pizza"), "yyyy-mm-dd format")
+  })
 })
 
 test_that("as_of older than 2000 is not supported", {
-  expect_error(convert(68, from = "USD", to = "EUR", as_of = "1991-12-11"), "not supported")
+  with_mock(`currencyr::get_fixer_api_key` = function() { "key" }, {
+    expect_error(convert(68, from = "USD", to = "EUR", as_of = "1991-12-11"), "not supported")
+  })
 })
 
 test_that("time travel not supported", {
-  expect_error(convert(68, from = "USD", to = "EUR", as_of = "4991-12-11"), "time travel")
+  with_mock(`currencyr::get_fixer_api_key` = function() { "key" }, {
+    expect_error(convert(68, from = "USD", to = "EUR", as_of = "4991-12-11"), "time travel")
+  })
 })
 
 test_that("it quickchecks USD to EUR with as_of", {
-  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of) {
+  with_mock(`currencyr:::exchange_rate` = function(from, to, as_of, api_key) {
               if (identical(to, "EUR")) { 2 } else { stop("Invalid code!") }
             },
-            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") }, {
+            `currencyr:::exchange_rates` = function(as_of) { stop("Should not be called!") },
+            `currencyr::get_fixer_api_key` = function() { "key" }, {
     checkr::quickcheck(checkr::ensure(
       pre = list(amount %is% numeric, length(amount) == 1),
       post = list(

@@ -21,6 +21,7 @@ convert <- checkr::ensure(
     result %is% currency
   ),
   function(amount, from = "USD", to = "USD", as_of = NULL) {
+    api_key <- get_fixer_api_key()
     if (identical(as_of, "today") || identical(as_of, "latest")) { as_of <- NULL }
     if (length(as_of) == 1) {
       as_of <- suppressWarnings(lubridate::ymd(as_of))
@@ -37,7 +38,7 @@ convert <- checkr::ensure(
     exchange_rate <- if (identical(from, to)) {
       1
     } else {
-      currencyr:::exchange_rate(from, to, as_of)
+      currencyr:::exchange_rate(from, to, as_of, api_key)
     }
     result <- list(
       value = round(amount * exchange_rate, 2),
@@ -56,6 +57,8 @@ convert <- checkr::ensure(
 print.currency <- function(x, ...) {
   print(paste(round(x$value, 2), x$unit), ...)
 }
+
+get_fixer_api_key <- function() { Sys.getenv("FIXER_KEY") }
 
 #' @aliases convert
 currency <- convert

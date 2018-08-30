@@ -1,3 +1,9 @@
+## v0.0.1.9000
+
+* Fixer API has upgraded to require API keys. You must now get an API key from www.fixer.io and set it as an ENV var `FIXER_KEY` to use this service.
+* Fixer API now only convers through EUR and no longer has a base URL. We handle that upstream.
+
+
 #### v0.0.0.9005
 
 * Amends `exchange_rate` to get exchange rates up front.
