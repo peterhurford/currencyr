@@ -1,10 +1,15 @@
-exchange_rates <- memoise::memoise(function(as_of) {
+exchange_rates <- memoise::memoise(function(as_of, api_key = "") {
+  if (!checkr::is.simple_string(api_key)) {
+    stop("You must get an API key from www.fixer.io for this service to work. Please ",
+         "register for a key and then set `export FIXER_KEY=xxxxxx` as an environment ",
+         "variable before using this service.")
+  }
   if (length(as_of) == 1 && lubridate::ymd(Sys.Date()) != lubridate::ymd(as_of)) {
     message("Downloading historical exchange rates as of ", as_of, "... May take a minute...")
   } else {
     message("Downloading fresh exchange rates... May take a minute...")
   }
-  output <- httr::GET(currencyr:::get_fixer_url(base = "USD", as_of))
+  output <- httr::GET(currencyr:::get_fixer_url(base = "USD", as_of, api_key))
   status_code <- httr::status_code(output)
   if (!is.successful(status_code)) {
     stop("Error in fixer API - status code was ", status_code, "!")
@@ -15,8 +20,8 @@ exchange_rates <- memoise::memoise(function(as_of) {
 
 exchange_rate <- ensure(
   post = list(result %is% numeric, length(result) == 1),
-  function(from, to, as_of = NULL) {
-    rates <- exchange_rates(as_of)
+  function(from, to, as_of = NULL, api_key = "") {
+    rates <- exchange_rates(as_of = as_of, api_key = api_key)
     if (identical(from, "USD")) {
       rates[[to]]
     } else if (identical(to, "USD")) {
@@ -31,10 +36,10 @@ exchange_rate <- ensure(
     }
   })
 
-get_fixer_url <- function(base = "USD", as_of = NULL) {
+get_fixer_url <- function(base = "USD", as_of = NULL, api_key = "") {
   if (length(as_of) == 0) { as_of <- "latest" }
   base <- toupper(base)
-  paste0("http://api.fixer.io/", as_of, "?base=", base)
+  paste0("http://api.fixer.io/", as_of, "?base=", base, "&access_key=", api_key)
 }
 
 is.successful <- function(status_code) {

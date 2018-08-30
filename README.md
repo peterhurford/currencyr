@@ -2,6 +2,8 @@
 
 **CurrencyR** is a package for converting currencies into other currencies. It is backed by the [Fixer.io API](http://fixer.io/), a free JSON API for current and historical foreign exchange rates published by the European Central Bank.
 
+**You need a Fixer API key for this to work!** Please go to http://fixer.io and sign up for a free API key. Then add `export FIXER_KEY=apikeygoeshere` to your `~/.bash_profile` to use this service.
+
 ```R
 currency <- currencyr::convert(1000, from = "USD", to = "CAD")
 currency
